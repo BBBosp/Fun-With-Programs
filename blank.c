@@ -2,7 +2,7 @@
 /* 
 Program name
 program function
-Cody Atkinson
+Name
 Date
 */
 void definethings(void){        //beginning of definition
