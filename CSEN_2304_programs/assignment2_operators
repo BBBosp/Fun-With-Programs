@@ -1,0 +1,55 @@
+#include <stdio.h>
+/* 
+Assignment 2
+query for 2 numbers and display their sum, difference, product, quotient, and average.
+bosp1301
+February 16, 2016
+*/
+
+
+
+int main(void){                //beginning of main
+
+	double v1;		//declare variables a & b to query for
+	double v2;
+	double sum;		//declare variables for all outputs
+	double diff;
+	double prod;
+	double quo;
+	double avg;
+	
+	printf("enter a non zero decimal value for variable 1 \n");  //request value for 1
+	scanf("%lf", &v1);			//query for value 1
+	
+	printf("enter a non zero decimal value for variable 2 \n");  //request value for 2
+	scanf("%lf", &v2);			//query for value 2
+	
+	printf("variable 1= %f\n", v1);      //print initial variables
+	printf("variable 2= %f\n", v2);
+	
+	sum=v1+v2;								//get and print sum
+	printf("the sum is %lf\n",sum);
+	
+	diff=v1-v2;
+	printf("the difference is %lf\n",diff);		//get and print difference
+	
+	prod=v1*v2;
+	printf("the product is %lf\n",prod);	//get and print product
+	
+	if (v2==0){									//in case of zero denominator 
+		printf("the quotient is undefined\n");  // state that quotient is undefined
+	}
+	else{
+	
+		quo=v1/v2;
+		printf("the quotient is %lf\n",quo);	//get and print quotient
+	}
+	avg=(v1+v2)/2;
+	printf("the average is %lf\n",avg);		//get and print average
+	
+	
+	return(0);
+	
+	
+
+		}			        //end of main
