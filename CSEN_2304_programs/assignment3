@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <math.h>
+
+/* 
+Program name
+program function
+Name
+Date
+*/
+/*PFS(A, D, V, T, H){        //defining projectile flight solution with 3 parameters
+		
+		T=D/(V*cos(A))
+		H=V*sin(A)*T-(G*pow)
+
+			}				//end of definition
+
+*/
+int main(void){                //beginning of main
+	
+		float A1, D1, V1, T1, H1;   //create variables for data set 1
+		float A2, D2, V2, T2, H2;	//create variables for data set 2
+		
+
+		
+		printf("inputs\t data1\t data2\t\n");
+		printf("%d\t %d\t %d\t\n",&A1, &D1, &V1);
+
+		}			        //end of main
