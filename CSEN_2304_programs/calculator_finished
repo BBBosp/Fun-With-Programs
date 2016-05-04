@@ -1,0 +1,264 @@
+#include<stdio.h>
+/*
+bosp1301
+simple calculator that uses an input file to
+make an array, determine greatest common denominator,
+least common multiple, product, sum, minimum, 
+maximum, and sort it in ascending/descending order. 
+it utilizes switch case as an interface.all code 
+that is commented out is to be used for troubleshooting
+in the case of debugging
+CSEN 2304-001
+*/
+//prototype functions. full functions are located at bottom
+
+unsigned gcd(unsigned x, unsigned y);     
+long long int gcd_A( long long int n,long long int A[n]);
+long long int LCM(long long int *a, long long int first, long long int last, long long int GCD);
+long long int asc_sort( long long int *a, long long int size);
+long long int desc_sort( long long int *a, long long int size);
+double product_of_array( long long int *a, long long int size);
+long long int sum_of_array( long long int *a, long long int size);
+
+
+int main(void)
+{
+    //long long int a[10]={112, 160, 180, 240, 288, 32, 480, 96, 60, 72};   //array before use of input file
+    FILE *fp;         
+    FILE *file = fopen("input_file.txt", "r");//access text file for read only
+    long long int a[10];        //initialize array of 10
+
+    int i=0;
+    int num;			
+    while(fscanf(file, "%d", &num) > 0)//draw numbers from text file  
+    {					 
+        a[i] = num;			 //and place into array
+        i++;
+    }
+    fclose(file);
+
+
+    int max, min;
+    long long int size_a = sizeof(a)/sizeof(*a);//create variables and call 
+    double product = product_of_array(a,size_a);//functions to fill them with
+    long long int sum = sum_of_array(a,size_a); //the correct info
+    long long int gcd = gcd_A(size_a, a);
+    long long int lcm = LCM(a, 0, size_a-1, gcd);
+    asc_sort(a, size_a);
+    min = a[0];
+    max = a[9];
+ 
+    
+    char ch;
+    printf("Enter the Calculator Operation (In Capital Letter):");
+    scanf("%c",&ch);		//request and scan for an operation
+    
+    switch( ch )
+     {
+	case 'S' : printf( "Sum of the array of numbers is: %lld\n",sum);
+   		fp = fopen("/home/cody/programs/output.txt", "w+");
+   		fprintf(fp, "%lld\n",sum);
+   		fclose(fp);
+	    break;
+
+	case 'P' : printf( "Product of the array of numbers is: %f\n",product);
+   		fp = fopen("/home/cody/programs/output.txt", "w+");
+   		fprintf(fp, "%f\n",product);
+   		fclose(fp);
+	    break;
+
+	case 'G' : printf( "GCD of the array of numbers is: %lld\n",gcd);
+   		fp = fopen("/home/cody/programs/output.txt", "w+");
+   		fprintf(fp, "%lld\n",gcd);
+   		fclose(fp);
+	    break;
+
+	case 'L' : printf( "LCM of the array of numbers is: %lld\n",lcm);
+   		fp = fopen("/home/cody/programs/output.txt", "w+");
+   		fprintf(fp, "%lld\n",lcm);
+   		fclose(fp);
+	    break;
+
+	case 'R' : printf( "Sorting (ascending) of the array of numbers is: \n");
+    		for(i=0;i<10;i++)
+    		{
+    		    printf("%lld\n", a[i]);
+    		}
+   		fp = fopen("/home/cody/programs/output.txt", "w+");
+   		for(i=0;i<10;i++)
+    		{
+    		    fprintf(fp, "%lld\n", a[i]);
+    		}
+   		fclose(fp);
+	    break;
+
+	case 'D' : printf( "Sorting (descending) of the array of numbers is: \n");
+		desc_sort(a, size_a);//this case was made for descending sorting
+     		for(i=0;i<10;i++)
+    		{
+    		    printf("%lld\n", a[i]);
+    		}
+   		fp = fopen("/home/cody/programs/output.txt", "w+");
+   		for(i=0;i<10;i++)
+    		{
+    		    fprintf(fp, "%lld\n", a[i]);
+    		}
+   		fclose(fp);
+	    break;
+
+	case 'X' : printf( "Maximum of the array of numbers is: %d \n", max);
+   		fp = fopen("/home/cody/programs/output.txt", "w+");
+   		fprintf(fp, "%d\n",max);
+   		fclose(fp);
+	    break;
+
+	case 'N' : printf( "Minimum of the array of numbers is: %d\n", min);
+   		fp = fopen("/home/cody/programs/output.txt", "w+");
+   		fprintf(fp, "%d\n",min);
+   		fclose(fp);
+	    break;
+
+	default : printf( "Thanks for trying my 3D calculator program\n" );
+	    break;
+    }
+
+//following comments are placed for troubleshooting functions
+    //for(i=0;i<10;i++)
+    //{
+    //    printf("%lld\n",a[i]);
+    //}
+
+    //printf("%lld\n",a[1]);
+    //printf("%lld\n",lcm);
+    //printf("%lld\n", gcd);
+
+    //asc_sort(a, size_a);
+    //for(i=0;i<10;i++)
+    //{
+    //    printf("%lld\n", a[i]);
+    //}
+    
+    //desc_sort(a, size_a);
+    //for(i=0;i<10;i++)
+    //{
+    //    printf("%lld\n", a[i]);
+    //}
+    
+    //sum_of_array(a,size_a);
+    //printf("%f",product);
+    //product_of_array(a,size_a);
+    //printf("%Lf\n",product);
+    //printf("%f\n",sum);
+    //printf("%d   %d", min, max);
+
+    return 0;
+}
+
+
+unsigned gcd(unsigned x, unsigned y)
+{
+    unsigned wk;
+    if(x<y){ wk=x;x=y;y=wk; }
+    while(y){
+        wk = x%y;
+        x=y;
+        y=wk;
+    }
+    return x;
+}
+
+long long int gcd_A( long long int n,long long int A[n])
+{
+    if(n==1) return A[0];
+    if(n==2) return gcd(A[0], A[1]);
+    int h = n / 2;
+    return gcd(gcd_A(h, &A[h-1]), gcd_A(n - h, &A[h]));
+}
+	
+long long int LCM(long long int *a, long long int first, long long int last, long long int GCD)
+{
+    long long int lcm=a[first], i=0;
+    for(i=first+1; i<=last; i++)
+    {//printf("%lld  %lld\n",lcm,a[i]);
+      if(lcm < 0)
+       {
+        lcm = -lcm;
+	//printf("%lld\n",lcm);
+        }
+      if(a[i] < 0)
+       {
+        a[i] = -a[i]; 
+	//printf("%lld\n",a[1]); 
+        }
+      lcm= lcm*a[i]/GCD;
+      //printf("%lld\n",lcm);
+    }
+    
+    return lcm;
+}
+
+
+long long int asc_sort( long long int *a, long long int size)
+{   
+    int c, d, swap;  
+    for (c = 0 ; c < ( size - 1 ); c++)
+    {
+        for (d = 0 ; d < size - c - 1; d++)
+        {
+            if (a[d] > a[d+1]) // For decreasing order use < 
+            {
+                swap       = a[d];
+                a[d]   = a[d+1];
+                a[d+1] = swap;
+             }
+         }
+     }
+}
+
+
+long long int desc_sort( long long int *a, long long int size)
+{   
+    int c, d, swap;  
+    for (c = 0 ; c < ( size - 1 ); c++)
+    {
+        for (d = 0 ; d < size - c - 1; d++)
+        {
+            if (a[d] < a[d+1]) // For increasing order use < 
+            {
+                swap       = a[d];
+                a[d]   = a[d+1];
+                a[d+1] = swap;
+             }
+         }
+     }
+}
+
+long long int sum_of_array( long long int *a, long long int size)
+{
+    float sum = 0;
+    int i;
+    for(i=0;i< (size); i++)
+    {
+        //printf("%d   %lld\n", sum, a[i]);
+        sum= sum+a[i];
+        //printf("%d\n", sum);
+    }
+    //printf("%f\n", sum);
+    return sum;
+}
+
+double product_of_array( long long int *a, long long int size)
+{
+    long double product = 1;
+    int i;
+    for(i=0;i< (size); i++)
+    {
+        //printf("%f   %lld\n", product, a[i]);
+        product= product*a[i];
+        //printf("%f\n", product);
+    }
+    //printf("%Lf\n", product);
+    return product;
+}
+
+
